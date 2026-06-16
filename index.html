@@ -4,15 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سينما فور يو | مشاهدة أحدث الأفلام والمسلسلات مجاناً</title>
-    <!-- استدعاء خط Cairo وتصميم خارجي سريع -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body {
             background-color: #0f1115;
             color: #ffffff;
@@ -20,230 +14,244 @@
         }
         header {
             background: linear-gradient(180deg, #e50914 0%, #0f1115 100%);
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
         }
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-        }
-        header p {
-            color: #ccc;
+        header h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); }
+        header p { color: #ccc; font-size: 1.2rem; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
+
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: none;
+            background: #1c1f26;
+            color: white;
             font-size: 1.1rem;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+
+        h2 {
+            border-right: 5px solid #e50914;
+            padding-right: 15px;
+            margin: 40px 0 20px;
+            font-size: 1.8rem;
         }
+
         .movies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 25px;
-            margin-top: 30px;
         }
+
         .movie-card {
             background-color: #1c1f26;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
         .movie-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(229, 9, 20, 0.5);
         }
         .movie-card img {
             width: 100%;
-            height: 270px;
+            height: 280px;
             object-fit: cover;
         }
         .movie-info {
-            padding: 12px;
+            padding: 15px;
         }
         .movie-title {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 5px;
+        }
+        .movie-overview {
+            font-size: 0.85rem;
+            color: #bbb;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
         .movie-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #aaa;
         }
-        .rating {
-            color: #ffc107;
-            font-weight: bold;
-        }
-        /* تصميم النافذة المنبثقة لقفل الـ CPA */
+        .rating { color: #ffc107; font-weight: bold; }
+
+        /* CPA Locker */
         .locker-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s;
         }
-        .locker-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .locker-overlay.active { opacity: 1; pointer-events: auto; }
+
         .locker-box {
             background: #1c1f26;
-            padding: 30px;
-            border-radius: 12px;
+            padding: 35px;
+            border-radius: 16px;
             text-align: center;
-            max-width: 450px;
+            max-width: 480px;
             width: 90%;
-            border: 2px solid #e50914;
-            box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+            border: 3px solid #e50914;
+            box-shadow: 0 0 30px rgba(229,9,20,0.6);
         }
-        .locker-box h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #e50914;
-        }
-        .locker-box p {
-            font-size: 1rem;
-            color: #ddd;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
+        .locker-box h2 { color: #e50914; margin-bottom: 15px; }
         .cpa-btn {
-            display: inline-block;
             background-color: #e50914;
             color: white;
-            padding: 12px 30px;
-            text-decoration: none;
+            padding: 14px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            transition: background 0.2s;
-            cursor: pointer;
             border: none;
-            width: 100%;
-        }
-        .cpa-btn:hover {
-            background-color: #b80710;
-        }
-        .close-locker {
-            margin-top: 15px;
-            display: inline-block;
-            color: #aaa;
-            font-size: 0.85rem;
+            border-radius: 50px;
             cursor: pointer;
-            text-decoration: underline;
+            width: 100%;
+            margin: 20px 0;
         }
+        .cpa-btn:hover { background-color: #b80710; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>سينما فور يو</h1>
-        <p>شاهد وحمّل أحدث الأفلام والمسلسلات الحصرية بجودة عالية HD</p>
+        <p>شاهد أحدث الأفلام والمسلسلات بجودة HD - مجاناً</p>
     </header>
 
     <div class="container">
-        <h2 style="border-right: 4px solid #e50914; padding-right: 10px;">الأكثر تداولاً وإقبالاً الآن</h2>
-        <div class="movies-grid" id="moviesGrid">
-            <!-- الأفلام سيتم توليدها هنا تلقائياً عبر السكربت -->
-        </div>
+        <input type="text" id="searchInput" class="search-bar" placeholder="ابحث عن فيلم أو مسلسل..." onkeyup="searchMovies()">
+
+        <h2>الأكثر تداولاً الآن</h2>
+        <div class="movies-grid" id="trendingGrid"></div>
+
+        <h2>أفلام شائعة</h2>
+        <div class="movies-grid" id="popularMoviesGrid"></div>
+
+        <h2>أعلى تقييمًا</h2>
+        <div class="movies-grid" id="topRatedGrid"></div>
+
+        <h2>مسلسلات تلفزيونية</h2>
+        <div class="movies-grid" id="tvGrid"></div>
+
+        <h2>القادم قريبًا</h2>
+        <div class="movies-grid" id="upcomingGrid"></div>
     </div>
 
-    <!-- نافذة قفل المحتوى CPA Locker -->
+    <!-- CPA Locker -->
     <div class="locker-overlay" id="lockerOverlay">
         <div class="locker-box">
             <h2 id="lockedTitle">محتوى مقفل!</h2>
-            <p>لمشاهدة أو تحميل الفيلم بجودة عالية وبدون إعلانات، يرجى تأكيد هويتك أولاً عبر إكمال أحد التحققات السريعة (يستغرق دقيقة واحدة فقط).</p>
-            
-            <!-- ضع رابط عرض الـ CPA أو رابط الـ Content Locker الخاص بك هنا -->
-            <button class="cpa-btn" onclick="startCPALocker()">شاهـد الآن بجودة HD</button>
-            
-            <div class="close-locker" onclick="toggleLocker(false)">إغلاق</div>
+            <p>لمشاهدة أو تحميل الفيلم/المسلسل بجودة عالية بدون إعلانات، أكمل التحقق السريع (دقيقة واحدة فقط).</p>
+            <button class="cpa-btn" onclick="startCPALocker()">شاهد الآن بجودة HD</button>
+            <div style="margin-top:15px; color:#aaa; cursor:pointer; text-decoration:underline;" onclick="toggleLocker(false)">إغلاق</div>
         </div>
     </div>
 
     <script>
-        // مفتاح API مجاني جاهز ومخصص لجلب البيانات (Trending Movies & Shows)
-        const apiKey = '844111cc2f16e6d766747b0e45cfb2a2'; 
-        const grid = document.getElementById('moviesGrid');
-        const overlay = document.getElementById('lockerOverlay');
-        const lockedTitle = document.getElementById('lockedTitle');
+        const apiKey = '844111cc2f16e6d766747b0e45cfb2a2';
+        const baseImageUrl = 'https://image.tmdb.org/t/p/w500';
 
-        // جلب الأفلام والمسلسلات الرائجة تلقائياً
-        async function fetchContent() {
+        async function fetchTMDB(endpoint, containerId) {
             try {
-                // جلب الأفلام والمسلسلات الأكثر إقبالاً اليوم
-                const response = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}&language=ar`);
-                const data = await response.json();
-                displayMovies(data.results);
-            } catch (error) {
-                console.error("خطأ في جلب البيانات:", error);
-            }
+                const res = await fetch(`https://api.themoviedb.org/3${endpoint}?api_key=${apiKey}&language=ar&page=1`);
+                const data = await res.json();
+                displayCards(data.results, containerId);
+            } catch (e) { console.error(e); }
         }
 
-        function displayMovies(items) {
+        // Fetch multiple pages for bigger library feel
+        async function fetchMultiplePages(endpoint, containerId, pages = 3) {
+            let allItems = [];
+            for (let i = 1; i <= pages; i++) {
+                try {
+                    const res = await fetch(`https://api.themoviedb.org/3${endpoint}?api_key=${apiKey}&language=ar&page=${i}`);
+                    const data = await res.json();
+                    allItems = allItems.concat(data.results);
+                } catch (e) {}
+            }
+            displayCards(allItems.slice(0, 60), containerId); // limit to avoid too heavy page
+        }
+
+        function displayCards(items, containerId) {
+            const grid = document.getElementById(containerId);
             grid.innerHTML = '';
             items.forEach(item => {
-                const title = item.title || item.name;
-                const releaseDate = item.release_date || item.first_air_date || 'قريباً';
-                const year = releaseDate.split('-')[0];
+                const isMovie = item.title !== undefined;
+                const title = isMovie ? item.title : item.name;
+                const release = isMovie ? item.release_date : item.first_air_date;
+                const year = release ? release.split('-')[0] : 'قريباً';
+                const overview = item.overview ? item.overview.substring(0, 120) + '...' : 'لا يوجد وصف متاح';
                 const rating = item.vote_average ? item.vote_average.toFixed(1) : '7.5';
-                const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image';
+                const poster = item.poster_path ? baseImageUrl + item.poster_path : 'https://via.placeholder.com/500x750?text=No+Image';
 
                 const card = document.createElement('div');
-                card.classList.add('movie-card');
+                card.className = 'movie-card';
                 card.innerHTML = `
                     <img src="${poster}" alt="${title}" loading="lazy">
                     <div class="movie-info">
                         <div class="movie-title" title="${title}">${title}</div>
+                        <div class="movie-overview">${overview}</div>
                         <div class="movie-meta">
                             <span>${year}</span>
                             <span class="rating">⭐ ${rating}</span>
                         </div>
                     </div>
                 `;
-                
-                // عند الضغط على أي فيلم يفتح قفل الـ CPA
-                card.addEventListener('click', () => {
-                    lockedTitle.innerText = `مشاهدة فيلم: ${title}`;
+                card.onclick = () => {
+                    document.getElementById('lockedTitle').innerText = `مشاهدة: ${title}`;
                     toggleLocker(true);
-                });
-
+                };
                 grid.appendChild(card);
             });
         }
 
         function toggleLocker(show) {
-            if (show) {
-                overlay.classList.add('active');
-            } else {
-                overlay.classList.remove('active');
-            }
+            document.getElementById('lockerOverlay').classList.toggle('active', show);
         }
 
-        // دالة يتم تشغيلها عند ضغط الزائر على زر المشاهدة داخل القفل
         function startCPALocker() {
-            // استبدل الرابط أدناه برابط الـ Content Locker الخاص بك من شركة CPA (مثل CPABuild أو OGAds أو CPALead)
-            window.location.href = "https://www.google.com"; 
+            // ←←← CHANGE THIS TO YOUR REAL CPA LOCKER LINK
+            window.location.href = "https://www.google.com";
         }
 
-        // تشغيل الجلب عند تحميل الصفحة
-        fetchContent();
+        function searchMovies() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            fetchTMDB(`/search/multi?query=${encodeURIComponent(query)}`, 'trendingGrid'); // reuse trending grid for search
+        }
+
+        // Load content on page load
+        window.onload = () => {
+            fetchTMDB('/trending/all/day', 'trendingGrid');
+            fetchMultiplePages('/movie/popular', 'popularMoviesGrid', 3);
+            fetchMultiplePages('/movie/top_rated', 'topRatedGrid', 3);
+            fetchMultiplePages('/tv/popular', 'tvGrid', 3);
+            fetchTMDB('/movie/upcoming', 'upcomingGrid');
+        };
     </script>
 </body>
 </html>
